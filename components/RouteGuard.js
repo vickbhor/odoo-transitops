@@ -10,11 +10,9 @@ export default function RouteGuard({ children }) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      // Get the current active session from Supabase
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session && pathname !== '/login') {
-        // No session? Kick them to login
         router.push('/login');
       } else if (session && pathname === '/login') {
         router.push('/dashboard');
@@ -22,23 +20,9 @@ export default function RouteGuard({ children }) {
         setAuthorized(true);
       }
     };
-
     checkAuth();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_OUT') router.push('/login');
-    });
-
-    return () => authListener.subscription.unsubscribe();
   }, [pathname, router]);
 
-  if (!authorized) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 text-slate-500">
-        Authenticating...
-      </div>
-    );
-  }
-
+  if (!authorized) return <div className="min-h-screen bg-slate-900"></div>;
   return <>{children}</>;
 }

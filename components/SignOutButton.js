@@ -1,28 +1,27 @@
 'use client'
-
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabaseClient'
 
 export default function SignOutButton() {
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
 
-  async function handleSignOut() {
-    setLoading(true)
-    const supabase = createClient()
+  const handleSignOut = async () => {
+    // 1. Tell Supabase to clear the token
     await supabase.auth.signOut()
-    router.push('/login')
+    
+    // 2. IMPORTANT: Refresh the router state to wipe local data
     router.refresh()
+    
+    // 3. Force redirect to the login page immediately
+    router.push('/login')
   }
 
   return (
-    <button
+    <button 
       onClick={handleSignOut}
-      disabled={loading}
-      className="w-full rounded px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 text-left disabled:opacity-50"
+      className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-red-900/20 hover:text-red-300 rounded transition-colors"
     >
-      {loading ? 'Signing out…' : 'Sign out'}
+      Sign Out
     </button>
   )
 }
