@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter(); // Router add kiya hai
   const [activeRole, setActiveRole] = useState("Fleet Manager");
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
 
@@ -23,10 +24,11 @@ export default function Sidebar() {
   const handleRoleChange = (role) => {
     setActiveRole(role);
     setShowRoleDropdown(false);
+    // Role change hote hi URL mein parameter pass karega
+    router.push(`${pathname}?role=${encodeURIComponent(role)}`);
   };
 
   return (
-    /* fixed hata kar shrink-0 aur sticky top-0 add kiya hai */
     <div className="w-64 shrink-0 bg-[#0f172a] text-white flex flex-col h-screen sticky top-0 z-50">
       <div className="p-6 text-xl font-bold border-b border-slate-800 relative">
         TransitOps
