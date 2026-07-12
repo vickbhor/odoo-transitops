@@ -23,16 +23,16 @@ export default function Sidebar() {
   const handleRoleChange = (role) => {
     setActiveRole(role);
     setShowRoleDropdown(false);
-    // Custom logic can be added here later if role-based viewing restriction is needed
   };
 
   return (
-    <div className="w-64 bg-[#0f172a] text-white flex flex-col h-screen fixed left-0 top-0 z-50">
-      <div className="p-6 text-xl font-bold border-b border-slate-800">
+    /* fixed hata kar shrink-0 aur sticky top-0 add kiya hai */
+    <div className="w-64 shrink-0 bg-[#0f172a] text-white flex flex-col h-screen sticky top-0 z-50">
+      <div className="p-6 text-xl font-bold border-b border-slate-800 relative">
         TransitOps
       </div>
       
-      <nav className="flex-1 p-4 space-y-2 mt-4">
+      <nav className="flex-1 p-4 space-y-2 mt-4 overflow-y-auto">
         {menuItems.map((item) => {
           const isActive = pathname === item.path || pathname?.startsWith(item.path + '/');
           
@@ -52,7 +52,6 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Dynamic Role Switcher Footer */}
       <div className="p-4 border-t border-slate-800 relative">
         <div 
           className="flex items-center justify-between cursor-pointer hover:bg-slate-800 p-2 rounded-lg transition-colors"
@@ -67,7 +66,7 @@ export default function Sidebar() {
               <p className="text-xs text-slate-400">Click to switch</p>
             </div>
           </div>
-          <span className="text-slate-400 text-xs">▲</span>
+          <span className="text-slate-400 text-xs">^</span>
         </div>
 
         {showRoleDropdown && (
