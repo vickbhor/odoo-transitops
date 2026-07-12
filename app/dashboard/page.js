@@ -2,10 +2,11 @@
 
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import Link from 'next/link';
 
 function DashboardData() {
   const searchParams = useSearchParams();
-  const role = searchParams.get('role') || 'Fleet Manager'; // Dynamic role fetching
+  const role = searchParams.get('role') || 'Fleet Manager';
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
@@ -23,7 +24,6 @@ function DashboardData() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        {/* Stat Cards */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
           <h3 className="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Total Fleet</h3>
           <p className="text-4xl font-bold text-[#0f172a]">24</p>
@@ -53,15 +53,15 @@ function DashboardData() {
         <div className="bg-[#0f172a] rounded-xl shadow-lg p-6 text-white">
           <h2 className="text-lg font-bold mb-6">Quick Actions</h2>
           <div className="space-y-3">
-            <button className="w-full text-left bg-slate-800 hover:bg-slate-700 px-5 py-4 rounded-lg border border-slate-700 transition-colors text-sm font-medium text-slate-200 flex justify-between items-center">
+            <Link href="/trips/new" className="w-full text-left bg-slate-800 hover:bg-slate-700 px-5 py-4 rounded-lg border border-slate-700 transition-colors text-sm font-medium text-slate-200 flex justify-between items-center block">
               Dispatch Vehicle <span>&rarr;</span>
-            </button>
-            <button className="w-full text-left bg-slate-800 hover:bg-slate-700 px-5 py-4 rounded-lg border border-slate-700 transition-colors text-sm font-medium text-slate-200 flex justify-between items-center">
+            </Link>
+            <Link href="/reports" className="w-full text-left bg-slate-800 hover:bg-slate-700 px-5 py-4 rounded-lg border border-slate-700 transition-colors text-sm font-medium text-slate-200 flex justify-between items-center block">
               Generate Report <span>&rarr;</span>
-            </button>
-            <button className="w-full text-left bg-slate-800 hover:bg-slate-700 px-5 py-4 rounded-lg border border-slate-700 transition-colors text-sm font-medium text-slate-200 flex justify-between items-center">
+            </Link>
+            <Link href="/drivers" className="w-full text-left bg-slate-800 hover:bg-slate-700 px-5 py-4 rounded-lg border border-slate-700 transition-colors text-sm font-medium text-slate-200 flex justify-between items-center block">
               Update Driver <span>&rarr;</span>
-            </button>
+            </Link>
           </div>
         </div>
       </div>
