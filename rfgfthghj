@@ -1,0 +1,5 @@
+[33m55034c3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m feat: trip creation form with available-only vehicle/driver pickers and cargo validation
+[33m521a386[m Cleaned up duplicate Supabase client initialization
+[33m30e5f8b[m Initial commit: Setup authentication and dashboard
+[33me571228[m feat: vehicle registry + maintenance module (hours 1-3)
+[33m064ab6e[m feat: maintenance workflow with auto status transitions
