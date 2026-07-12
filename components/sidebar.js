@@ -1,53 +1,91 @@
-// components/Sidebar.js
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import SignOutButton from './SignOutButton'
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Dashboard', roles: ['Fleet Manager', 'Driver', 'Safety Officer', 'Financial Analyst'] },
-  { href: '/vehicles', label: 'Vehicles', roles: ['Fleet Manager'] },
-  { href: '/drivers', label: 'Driver Management', roles: ['Fleet Manager', 'Safety Officer'] },
-  { href: '/trips', label: 'Trips', roles: ['Fleet Manager', 'Driver'] },
-  { href: '/maintenance', label: 'Maintenance', roles: ['Fleet Manager', 'Safety Officer'] },
-  { href: '/fuel-expenses', label: 'Fuel & Expenses', roles: ['Fleet Manager', 'Financial Analyst'] },
-  { href: '/reports', label: 'Reports', roles: ['Fleet Manager', 'Financial Analyst'] },
-]
+export default function Sidebar() {
+  const pathname = usePathname();
+  const [activeRole, setActiveRole] = useState("Fleet Manager");
+  const [showRoleDropdown, setShowRoleDropdown] = useState(false);
 
-export default function Sidebar({ role, name }) {
-  const pathname = usePathname()
-  // This line filters the links based on the role prop passed to the Sidebar
-  const items = NAV_ITEMS.filter((item) => item.roles.includes(role))
+  const menuItems = [
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Vehicles", path: "/vehicles" },
+    { name: "Trips", path: "/trips" },
+    { name: "Maintenance", path: "/maintenance" },
+    { name: "Fuel & Expenses", path: "/fuel-expenses" },
+    { name: "Reports", path: "/reports" }
+  ];
+
+  const roles = ["Fleet Manager", "Operations Lead", "Dispatcher", "Admin"];
+
+  const handleRoleChange = (role) => {
+    setActiveRole(role);
+    setShowRoleDropdown(false);
+    // Custom logic can be added here later if role-based viewing restriction is needed
+  };
 
   return (
-    <aside className="w-64 shrink-0 bg-slate-900 text-slate-100 flex flex-col">
-      <div className="p-4 border-b border-slate-700">
-        <p className="font-semibold">TransitOps</p>
-        <p className="text-sm text-slate-400">{name}</p>
-        <p className="text-xs text-slate-500">{role}</p>
+    <div className="w-64 bg-[#0f172a] text-white flex flex-col h-screen fixed left-0 top-0 z-50">
+      <div className="p-6 text-xl font-bold border-b border-slate-800">
+        TransitOps
       </div>
-
-      {/* Unified Navigation List */}
-      <nav className="flex-1 p-2 space-y-1 mt-4">
-        {items.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`block rounded px-3 py-2 text-sm transition-colors ${
-              pathname === item.href 
-                ? 'bg-blue-600 text-white shadow-md' 
-                : 'text-slate-300 hover:bg-slate-800'
-            }`}
-          >
-            {item.label}
-          </Link>
-        ))}
+      
+      <nav className="flex-1 p-4 space-y-2 mt-4">
+        {menuItems.map((item) => {
+          const isActive = pathname === item.path || pathname?.startsWith(item.path + '/');
+          
+          return (
+            <Link key={item.name} href={item.path} className="block">
+              <div 
+                className={`px-4 py-3 rounded-lg transition-colors duration-200 cursor-pointer ${
+                  isActive 
+                    ? "bg-blue-600 text-white font-medium shadow-lg" 
+                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                }`}
+              >
+                {item.name}
+              </div>
+            </Link>
+          );
+        })}
       </nav>
 
-      <div className="p-2 border-t border-slate-700">
-        <SignOutButton />
+      {/* Dynamic Role Switcher Footer */}
+      <div className="p-4 border-t border-slate-800 relative">
+        <div 
+          className="flex items-center justify-between cursor-pointer hover:bg-slate-800 p-2 rounded-lg transition-colors"
+          onClick={() => setShowRoleDropdown(!showRoleDropdown)}
+        >
+          <div className="flex items-center">
+            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold mr-3 text-white">
+              {activeRole[0]}
+            </div>
+            <div className="text-sm">
+              <p className="font-medium text-slate-200">{activeRole}</p>
+              <p className="text-xs text-slate-400">Click to switch</p>
+            </div>
+          </div>
+          <span className="text-slate-400 text-xs">▲</span>
+        </div>
+
+        {showRoleDropdown && (
+          <div className="absolute bottom-16 left-4 right-4 bg-slate-800 border border-slate-700 rounded-lg shadow-xl overflow-hidden z-50">
+            {roles.map((role) => (
+              <button
+                key={role}
+                onClick={() => handleRoleChange(role)}
+                className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-slate-700 ${
+                  activeRole === role ? "text-blue-400 font-medium bg-slate-750" : "text-slate-200"
+                }`}
+              >
+                {role}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-    </aside>
-  )
+    </div>
+  );
 }
